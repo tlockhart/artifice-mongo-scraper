@@ -2,6 +2,7 @@
 //dependencies
 var axios = require("axios");
 var cheerio = require("cheerio");
+var async = require("async");
 
 //models
 //var db = require("../models");
@@ -15,29 +16,24 @@ module.exports = function(app, db) {
      * Purpose: Return all records in db.
      * Requirement: Must be called first to avoid Async problems
      **********************************************************/
-    function getAllDbArticles(){
-        //db Fetch
+    async function getAllDbArticles() {
+        try
+        {
+            const allStoredArticles = await db.Article.find({});
+            console.log("ALLARTICLES = "+ allStoredArticles);
+            savedArticles = allStoredArticles;
+            console.log("SAVEDARTICLES = "+savedArticles);
+            return allStoredArticles;
+        }
+        catch(err){
+        }
+    };//getAllDbArticles
+    function getArticles(req, res){
         
-        var allStoredArticles = 
-            db.articles.find({}, function(error, found){
-                var dbReturnVal;
-                // Log any errors if the server encounters one
-                if (error) {
-                    console.log(error);
-                }
-                // Otherwise, send the result of this query to the browser
-                else {
-                    //res.json(found);
-                    console.log("htmlRoutes.js - /scrape: savedArticles = "+JSON.stringify(found));
-                    //savedArticles = found;
-                    dbReturnVal = found;
-                    savedArticles = found;
-                    console.log("htmlRoutes.js - /scrape: dbReturnVal = "+JSON.stringify(savedArticles));
-                } 
-                return savedArticles;
-            })//title find
-        return allStoredArticles;
-    }//getAllDbArticles
+        /*res.status(200).json({
+            message : "you requested index page"
+        });*/
+    }
     /**********************************************************
      * Name: findUnsavedArticles
      * Purpose: Returns all articles no in the db.
@@ -45,7 +41,7 @@ module.exports = function(app, db) {
     function getUnsavedArticles(scrapedArticles, savedArticles, cb) {
         var filteredArticles = [];
 
-        /*console.log("************************************");
+       /* console.log("************************************");
         console.log("htmlRoutes.js - FilterUnsavedDate: Scraped Data = ", scrapedArticles);
         console.log("************************************");
 
@@ -55,7 +51,7 @@ module.exports = function(app, db) {
 
         for(var i = 0; i < savedArticles.length; i++){
           for(var j= 0; j< scrapedArticles.length; j++){
-            //console.log("COMPARE : " +"savedArticles Title = "+savedArticles[i].title+" ScrapedArticles = "+scrapedArticles[j].title);
+           // console.log("COMPARE : " +"savedArticles Title = "+savedArticles[i].title+" ScrapedArticles = "+scrapedArticles[j].title);
             if(savedArticles[i].title === scrapedArticles[j].title){
               //console.log("htmlRoutes.js: MATCH FOUND");
             }
@@ -82,7 +78,7 @@ module.exports = function(app, db) {
      * To delay program execution.
      ************************************************/
     function cb(data){
-        //console.log("htmlRoutes.js - CALLBACK: DATA = "+JSON.stringify(data));
+        console.log("htmlRoutes.js - CALLBACK: DATA = "+JSON.stringify(data));
         return data;
     }//cb
     /***************************************************************
@@ -122,12 +118,10 @@ module.exports = function(app, db) {
                 });//each
 
                 // Log the scrapedArticles once you've looped through each of the elements found with cheerio
-                console.log();
-                //console.log("SCRAPED ARTICLES  =" + JSON.stringify(scrapedArticles));
+                console.log("SCRAPED ARTICLES  =" + JSON.stringify(scrapedArticles));
                 console.log("SAVED DATABASE ARTICLES  =" + JSON.stringify(savedArticles));
                 //data = {scrapedArticles};
                 // console.log(data);
-                console.log();
                 var unsavedArticles = getUnsavedArticles(scrapedArticles, savedArticles, cb);
                 console.log("UNSAVED SCRAPED ARTICLES  =" + JSON.stringify(unsavedArticles));
                 var returnData = cb(unsavedArticles);
@@ -161,7 +155,7 @@ module.exports = function(app, db) {
                 }
                 else{
                 console.log(title);
-                db.articles.insert({ "title": title, "summary": summary, "url": url, "image": image })
+                db.Article.insert({ "title": title, "summary": summary, "url": url, "image": image })
                 }
                 //console.log(doc);
             });
@@ -172,16 +166,46 @@ module.exports = function(app, db) {
 
 /********************************************************************/
     //1) Get all the articles in the DB First thing for comparisons:
+    //var savedArticles = getArticles();
+    //getAllDbArticles();
+    //1) Get all the articles in the DB First thing for comparisons:
     var savedArticles;
-    getAllDbArticles();
+    console.log("htmlRoutes.js - outside/scrape: savedArticles = "+JSON.stringify(savedArticles));
 /*********************************************************************/
     /*****************
      * ROUTES
      ****************/
+    // 1. At the root path, send a simple hello world message to the browser
+    app.get("/", function (req, res) {
+        //1) Get all the articles in the DB First thing for comparisons:
+        db.Article.find({})
+        .then(function(articles) {
+            // If we were able to successfully find Articles, send them back to the client
+            console.log("*****************************");
+            console.log("ARTICLES = ", articles);
+            console.log("*****************************");
+            savedArticles = articles; //data
+              //console.log("STOREFRONT DATA =" + JSON.stringify(data));
+              //return res.render("/", data); //res render
+        })
+        .catch(function (err) {
+                // If an error occurred, send it to the client
+                //res.json(err);
+        });
+        console.log("*****************************");
+        console.log("SAVED ARTICLES: ", savedArticles);
+        console.log("*****************************");
+        //res.send("Hello world");
+        //res.render("index", data);
+        //res.redirect("/articles");
+        res.render("index");
+    });//get index
+
      // A GET route for scraping the artifice website
      app.get("/scrape", function (req, res) {
         /*************************************************************/
-
+        console.log();
+        console.log("New Saved Articles = ", savedArticles);
         // First, tell the console what server.js is doing
         console.log("\n***********************************\n" +
         "Grabbing every thread name and link\n" +
@@ -195,13 +219,7 @@ module.exports = function(app, db) {
     
     });//Get /scraper
      /****************************************************************************/
-  // 1. At the root path, send a simple hello world message to the browser
-    app.get("/", function (req, res) {
-        //res.send("Hello world");
-        //res.render("index", data);
-        //res.redirect("/articles");
-        res.render("index");
-    });//get index
+  
 
    /* // gets unsaved, unhidden articles from db and displays them
     app.get("/articles", function (req, res) {

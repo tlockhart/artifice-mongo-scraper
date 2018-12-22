@@ -15,10 +15,10 @@ module.exports = function(app, db) {
      * Purpose: Return all records in db.
      * Requirement: Must be called first to avoid Async problems
      **********************************************************/
-    function getAllDbArticles(){
+    function getAllDbArticles(cb){
         //db Fetch
-        
-        var allStoredArticles = 
+        if(typeof cb === "function"){
+            var allStoredArticles = 
             db.articles.find({}, function(error, found){
                 var dbReturnVal;
                 // Log any errors if the server encounters one
@@ -28,15 +28,27 @@ module.exports = function(app, db) {
                 // Otherwise, send the result of this query to the browser
                 else {
                     //res.json(found);
+                    console.log("1 - After function complete");
                     console.log("htmlRoutes.js - /scrape: savedArticles = "+JSON.stringify(found));
                     //savedArticles = found;
-                    dbReturnVal = found;
-                    savedArticles = found;
-                    console.log("htmlRoutes.js - /scrape: dbReturnVal = "+JSON.stringify(savedArticles));
+                    //dbReturnVal = found;
+                    allStoredArticles = found;
+                    //savedArticles = found;
+                    console.log( "2 - After function complete");
+                    console.log("htmlRoutes.js - /scrape: allStoredArticles = "+JSON.stringify(allStoredArticles));
+                    console.log("3 - After function complete");
+                    cb(allStoredArticles);
                 } 
-                return savedArticles;
-            })//title find
-        return allStoredArticles;
+                //return allStoredArticles;
+            });//title find
+
+        //var allArticlesInDb = cb(allStoredArticles);
+        console.log("GETALLDBARTICELS COMPLETE: All Articles in DB =", allStoredArticles);
+        console.log();
+        return cb(allStoredArticles);
+        }//if callback is a function
+        
+        
     }//getAllDbArticles
     /**********************************************************
      * Name: findUnsavedArticles
@@ -45,7 +57,7 @@ module.exports = function(app, db) {
     function getUnsavedArticles(scrapedArticles, savedArticles, cb) {
         var filteredArticles = [];
 
-        /*console.log("************************************");
+       /* console.log("************************************");
         console.log("htmlRoutes.js - FilterUnsavedDate: Scraped Data = ", scrapedArticles);
         console.log("************************************");
 
@@ -55,7 +67,7 @@ module.exports = function(app, db) {
 
         for(var i = 0; i < savedArticles.length; i++){
           for(var j= 0; j< scrapedArticles.length; j++){
-            //console.log("COMPARE : " +"savedArticles Title = "+savedArticles[i].title+" ScrapedArticles = "+scrapedArticles[j].title);
+           // console.log("COMPARE : " +"savedArticles Title = "+savedArticles[i].title+" ScrapedArticles = "+scrapedArticles[j].title);
             if(savedArticles[i].title === scrapedArticles[j].title){
               //console.log("htmlRoutes.js: MATCH FOUND");
             }
@@ -82,7 +94,7 @@ module.exports = function(app, db) {
      * To delay program execution.
      ************************************************/
     function cb(data){
-        //console.log("htmlRoutes.js - CALLBACK: DATA = "+JSON.stringify(data));
+        console.log("htmlRoutes.js - CALLBACK: DATA = "+JSON.stringify(data));
         return data;
     }//cb
     /***************************************************************
@@ -122,12 +134,10 @@ module.exports = function(app, db) {
                 });//each
 
                 // Log the scrapedArticles once you've looped through each of the elements found with cheerio
-                console.log();
-                //console.log("SCRAPED ARTICLES  =" + JSON.stringify(scrapedArticles));
+                console.log("SCRAPED ARTICLES  =" + JSON.stringify(scrapedArticles));
                 console.log("SAVED DATABASE ARTICLES  =" + JSON.stringify(savedArticles));
                 //data = {scrapedArticles};
                 // console.log(data);
-                console.log();
                 var unsavedArticles = getUnsavedArticles(scrapedArticles, savedArticles, cb);
                 console.log("UNSAVED SCRAPED ARTICLES  =" + JSON.stringify(unsavedArticles));
                 var returnData = cb(unsavedArticles);
@@ -172,8 +182,8 @@ module.exports = function(app, db) {
 
 /********************************************************************/
     //1) Get all the articles in the DB First thing for comparisons:
-    var savedArticles;
-    getAllDbArticles();
+    var savedArticles = getAllDbArticles(cb);
+    console.log("htmlRoutes.js - outside/scrape: savedArticles = "+JSON.stringify(savedArticles));
 /*********************************************************************/
     /*****************
      * ROUTES
