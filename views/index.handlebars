@@ -1,29 +1,23 @@
-  <!--div data-_id="5c17cde6f1c9360014b15690" class="card">
-    <div class="card-header">
-      <h3>
-        <a class="article-link" target="_blank" rel="noopener noreferrer" href="https://www.nytimes.com/2018/12/17/magazine/democrats-trump-investigation.html">How Far Will These Democrats Go?A Shutdown Looms. Can the G.O.P. Get Lawmakers to Show Up to Vote?Trump still makes money from his properties. Is this constitutional?</a>
-        <a class="btn btn-success save">Save Article</a>
-      </h3>
+  {{#if articles}}
+    {{#each articles}}
+    <div data-id="{{ this.id }}" class="card" data-status="{{ this.status }}">
+      <div class="card-header">
+        <h3>
+          <a class="article-link" target="_blank" rel="noopener noreferrer" href="{{ this.url }}">{{ this.title }}</a>
+          <a class="btn btn-success save">Save Article</a>
+        </h3>
+      </div>
+      <div class="card-body">{{ this.summary }}</div>
     </div>
-    <div class="card-body">Vanquished and retiring members have been skipping votes, and House Republican leaders are unsure whether they will ever return.</div>
-  </div>
-    <div data-_id="5c17cde6f1c9360014b1568e" class="card">
-    <div class="card-header">
-      <h3>
-        <a class="article-link" target="_blank" rel="noopener noreferrer" href="https://www.nytimes.com/2018/12/17/us/politics/russia-2016-influence-campaign.html">Russian Effort to Influence 2016 Election Targeted African-AmericansFormer Associates of Flynn Indicted in Turkey Lobbying CaseMore Powerful Than a Russian Troll Army: The National Enquirer</a>
-        <a class="btn btn-success save">Save Article</a>
-      </h3>
+    {{/each}}
+    {{else}}
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="text-center"> No new articles have been found. </h2>
+          <a class="btn btn-danger unhide">UNHIDE ARTICLES</a>
+        </div>
+      </div>
     </div>
-    <div class="card-body">The indictment of the former associates of Michael T. Flynn, President Trump’s first national security adviser, is further evidence of a crackdown on unregistered foreign lobbying.Now that the supermarket tabloid has admitted to prosecutors that it did political dirty work for Donald Trump, our columnist takes a look at its unlikely power.</div>
-  </div-->
-  {{#each results}}
-    <div data-_id="{{ id }}" class="card">
-    <div class="card-header">
-      <h3>
-        <a class="article-link" target="_blank" rel="noopener noreferrer" href="{{ url }}">{{ title }}</a>
-        <a class="btn btn-success save">Save Article</a>
-      </h3>
-    </div>
-    <div class="card-body">{{ summary }}</div>
-  </div>
-  {{/each}}
+  {{/if}}
+  

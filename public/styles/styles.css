@@ -48,7 +48,7 @@ html {
   .jumbotron .background-image {
     height: 100%;
     /*background-image: url("../images/newspaper.jpg");*/
-    background-image: url("../images/woment.jpeg");
+    background-image: url("../images/women.jpeg");
     background-size: cover;
   }
   
@@ -128,7 +128,7 @@ html {
   }
   
   .navbar-nav > li > a.scrape-new,
-  .navbar-nav > li > a.clear {
+  .navbar-nav > li > a.clear, a.unhide {
     padding: 10px;
     margin-top: 10px;
     margin-left: 10px;
@@ -137,7 +137,7 @@ html {
   }
   
   .navbar-nav > li > a.scrape-new:hover,
-  .navbar-nav > li > a.clear:hover {
+  .navbar-nav > li > a.clear:hover, a.unhide {
     background: #4caf50;
   }
   

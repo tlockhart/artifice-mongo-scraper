@@ -178,20 +178,7 @@ module.exports = function(app, db) {
     // 1. At the root path, send a simple hello world message to the browser
     app.get("/", function (req, res) {
         //1) Get all the articles in the DB First thing for comparisons:
-        db.Article.find({})
-        .then(function(articles) {
-            // If we were able to successfully find Articles, send them back to the client
-            console.log("*****************************");
-            console.log("ARTICLES = ", articles);
-            console.log("*****************************");
-            savedArticles = articles; //data
-              //console.log("STOREFRONT DATA =" + JSON.stringify(data));
-              //return res.render("/", data); //res render
-        })
-        .catch(function (err) {
-                // If an error occurred, send it to the client
-                //res.json(err);
-        });
+        
         console.log("*****************************");
         console.log("SAVED ARTICLES: ", savedArticles);
         console.log("*****************************");
