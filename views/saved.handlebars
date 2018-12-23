@@ -1,0 +1,22 @@
+  {{#if articles}}
+    {{#each articles}}
+    <div data-id="{{ this.id }}" class="card" data-status="{{ this.status }}">
+      <div class="card-header">
+        <h3>
+          <a class="article-link" target="_blank" rel="noopener noreferrer" href="{{ this.url }}">{{ this.title }}</a>
+          <a class="btn btn-success note">Article Note</a><a class="btn btn-success delete">Delete Article</a>
+        </h3>
+      </div>
+      <div class="card-body">{{ this.summary }}</div>
+    </div>
+    {{/each}}
+    {{else}}
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="text-center"> No saved articles have been found. </h2>
+          <a class="btn btn-danger scrape" href="/">SCRAPE New ARTICLES</a>
+        </div>
+      </div>
+    </div>
+  {{/if}}

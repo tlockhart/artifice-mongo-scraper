@@ -56,9 +56,84 @@
     <p>The Artifice Mongo Scraper</p>
   </div>
 </footer>
+<!---MODAL GOES HERE-->
+    <div id="results-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal content-->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div class="justify-content-center modal-header">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+                  <!--SECTION 1: HEADER-->
+                  <h2 class="modal-title"><strong>Best Match</strong></h2>
+                </div>
+                <!--Modal Header-->
+                <div class="row">
+                  <div class="col">
+                  </div>
+                  <!--col-->
+                  <div class="col-10 justify-self-center">
+                    <div class="modal-body">
+
+                      <!--SECTION 2: BODY-->
+                      <div class="row">
+                        <div class="col">
+                        </div>
+                        <div class="col-10">
+                          <div>
+                            <!--col-->
+                            <h2 id="match-name"></h2>
+                          </div>
+                          <div>
+                            <img class="img-fluid" id="match-img" src="https://via.placeholder.com/150" alt="">
+                          </div>
+                          <!--img-->
+                        </div>
+                        <!--col-10-->
+                        <div class="col">
+                        </div>
+                        <!--col-->
+                      </div>
+                      <!--row-->
+                    </div>
+                    <!--Modal Body-->
+                  </div>
+                  <!--col10-->
+                  <div class="col">
+                  </div>
+                  <!--col-->
+                </div>
+                <!--row-->
+                <div class="modal-footer">
+
+                  <!--SECTION 3: FOOTER-->
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                <!--Modal Footer-->
+              </div>
+              <!--column-->
+            </div>
+            <!--row-->
+          </div>
+          <!--Container fluid-->
+        </div>
+        <!--Modal Content-->
+      </div>
+      <!--Modal-Dialog-->
+    </div>
+    <!--Results Modal-->
+    <!-- Modal -->
+<!---END OF MODAL--->
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script-->
+
+
+<!--Bootstrap Modal-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 <!--script src="/assets/javascript/index.js"></script-->
 <script src="/js/scrape.js"></script>

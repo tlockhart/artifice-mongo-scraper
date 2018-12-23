@@ -45,7 +45,7 @@ module.exports = function(app) {
             .then(function(doc){
                 if(doc.length > 0)
                 {
-                    console.log("Story already in db");
+                   // console.log("Story already in db");
                 }
                 else{
                     console.log(title);
@@ -132,6 +132,8 @@ module.exports = function(app) {
             console.log(error);
         });
     }); // /articles route
+
+    //3. Update all articles status
     app.put("/update-articles-status", function(req, res) {
         var newStatus = parseInt(req.body.status);
         var oldStatus = 0;
@@ -148,7 +150,7 @@ module.exports = function(app) {
         }
         
         console.log("NEWSTATUS = "+newStatus +", OLDSTATUS = "+oldStatus);
-        db.Article.updateMany({status: oldStatus}, {$set: {status: newStatus}})
+        db.Article.updateMany({"status": oldStatus}, {$set: {"status": newStatus}})
           .then(function() {
             //res.status(200).send("ok");
             //res.redirect("/articles");
@@ -156,10 +158,76 @@ module.exports = function(app) {
           })
           // eslint-disable-next-line prettier/prettier
           .catch(function( error ) {
-            console.log("htmlRoutes.js: Could not update unsaved articles = " + error);
+            console.log("htmlRoutes.js: Could not update status of articles = " + error);
           });
       });// /update-article-status
-//DONT WORE ABOUT FOR NOW
+
+      //4. Update a singe articles status
+      app.put("/update-single-article", function(req, res) {
+          var id = req.body.id;
+          var status = req.body.status;
+          console.log("ID = "+id +", STATUS = "+status);
+          db.Article.findOneAndUpdate({"_id": id}, {$set: {"status": status}})
+          .then(function() {
+            //res.redirect("/articles");
+            console.log("/update-single-article save article");
+            res.status(200).send("ok");
+            //res.redirect("/");
+            //res.redirect("/articles");
+            //res.render("/articles");
+          })
+          // eslint-disable-next-line prettier/prettier
+          .catch(function( error ) {
+            console.log("htmlRoutes.js: Could not update unsaved articles = " + error);
+          });
+      });
+
+      //5. Display all saved articles
+      app.get("/saved", function (req, res) {
+        db.Article.find({"status": 1})
+        .then(function(data){
+
+            console.log("htmlRoutes.js -/saved: "+data.length);
+            //var data = {doc};
+            if(data.length > 0){
+                res.render("saved", {articles: data, current: true});
+            }
+            else{
+                console.log("In else");
+                res.render("saved");
+            }
+           
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+    }); // /articles route
+    
+    //6. Display the note and populate it with the data saved.
+    app.get("/notes/:id", function(req, res) {
+        var id = req.params.id;
+        console.log("NOTES ID = "+id);
+        db.Article.find({"_id": id})
+        // Specify that we want to populate the retrieved users with any associated notes
+        .populate("notes")
+        .then(function(data){
+
+            console.log("htmlRoutes.js -/saved: "+data.length);
+            //var data = {doc};
+            if(data.length > 0){
+                //res.render("saved", {articles: data, current: true});
+                res.json(data);
+            }
+            else{
+                console.log("No Notes Found");
+               // res.render("saved");
+            }          
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+      });//POST
+//DONT WORRY ABOUT FOR NOW
     /****************************************************************************/
      // A GET route for scraping the artifice website
      app.get("/scrape", function (req, res) {
