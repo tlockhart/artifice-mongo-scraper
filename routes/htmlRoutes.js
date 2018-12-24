@@ -227,6 +227,51 @@ module.exports = function(app) {
             console.log(error);
         });
       });//POST
+      //7. Insert new record into DB
+      //6. Display the note and populate it with the data saved.
+    app.post("/insert-note", function(req, res) {
+        //var id = req.params.id;
+        var id = req.body.id;
+        var title = req.body.title;
+        var body = req.body.body;
+
+        console.log("NOTES ID = " + id + " body = " + body);
+        // Create a new Note in the db
+        db.Note.create({ "title": title, "body": body})
+            .then(function (dbNote) {
+                // If a Note was created successfully, find one User (there's only one) and push the new Article's _id to the Article's `note` array
+                // { new: true } tells the query that we want it to return the updated Article -- it returns the original by default
+                // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+                return db.Article.findOneAndUpdate({"_id": id}, { $push: { note: dbNote._id } }, { new: true });
+            })
+            .then(function (dbUser) {
+                // If the User was updated successfully, send it back to the client
+                res.json(dbUser);
+            })
+            .catch(function (err) {
+                // If an error occurs, send it back to the client
+                res.json(err);
+            });
+        /*db.Article.find({"_id": id})
+        // Specify that we want to populate the retrieved users with any associated notes
+        .populate("notes")
+        .then(function(data){
+
+            console.log("htmlRoutes.js -/saved: "+data.length);
+            //var data = {doc};
+            if(data.length > 0){
+                //res.render("saved", {articles: data, current: true});
+                res.json(data);
+            }
+            else{
+                console.log("No Notes Found");
+               // res.render("saved");
+            }          
+        })
+        .catch(function(error){
+            console.log(error);
+        });*/
+      });//POST
 //DONT WORRY ABOUT FOR NOW
     /****************************************************************************/
      // A GET route for scraping the artifice website

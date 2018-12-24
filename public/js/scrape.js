@@ -76,43 +76,4 @@ $(document).ready(function () {
             console.log("error = "+error);
         });
     } //setArticlesStatus  
-    //Get the notes that are available for this record and display in a modal
-    $(".note").on("click", function (event) {
-        event.preventDefault();
-        //var articleId = $(this).attr("data-id");
-        var articleId = $(this).parent().parent().parent().attr("data-id");
-        /*var articleOldStatus = $(this).parent().parent().parent().attr("data-status");
-        var articleNewStatus = saved;
-        console.log("******************");*/
-        console.log("ArticleToSave = "+articleId);
-        /*console.log("ArticleOldStatus = "+articleOldStatus);
-        console.log("ArticleNewStatus = "+articleNewStatus);
-        console.log("******************");*/
-        /*var data = {
-            id: articleId
-        }*/
-        displayModal(articleId);
-    });
-    function displayModal(data){
-          $.ajax("/notes/"+data, {
-            type: "GET",
-            //data: data //Pass the artist object
-          })
-          .then(function(data){
-              //location.replace("/articles");
-              console.log("Returned data = " + JSON.stringify(data));
-              // SET MODAL CONTENT: Grab the result from the AJAX post so that the best match's name and photo are displayed.
-              $("#match-name").text("Tony");
-              $("#match-img").attr("src", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxHMZ61_YBq_vUIGkG7MHRA9cSztvgRAMIdGu-i9b0RFb4zLDa_g");
-
-              /*$("#match-name").text(data.name);
-              $("#match-img").attr("src", data.photo);*/
-
-              // Show the modal with the best match
-              $("#results-modal").modal("toggle");
-          })
-          .catch(function(error){
-              console.log("error = "+error);
-          });
-    }
 });//document on ready

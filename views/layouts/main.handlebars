@@ -5,7 +5,8 @@
     <title>Mongo Scraper</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.0.0/materia/bootstrap.min.css" />
+    <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.0.0/materia/bootstrap.min.css" /-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Cormorant+SC" rel="stylesheet">
     <link rel="stylesheet" href="/styles/styles.css">
 </head>
@@ -57,7 +58,7 @@
   </div>
 </footer>
 <!---MODAL GOES HERE-->
-    <div id="results-modal" class="modal fade" role="dialog">
+    <div id="article-note-modal" class="modal fade" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <!-- Modal content-->
@@ -67,7 +68,7 @@
                 <div class="justify-content-center modal-header">
 
                   <!--SECTION 1: HEADER-->
-                  <h2 class="modal-title"><strong>Best Match</strong></h2>
+                  <h2 class="modal-title"><strong>Notes</strong></h2>
                 </div>
                 <!--Modal Header-->
                 <div class="row">
@@ -84,10 +85,21 @@
                         <div class="col-10">
                           <div>
                             <!--col-->
-                            <h2 id="match-name"></h2>
+                            <!--h2 id="match-name"></h2-->
                           </div>
                           <div>
-                            <img class="img-fluid" id="match-img" src="https://via.placeholder.com/150" alt="">
+                            <!--img class="img-fluid" id="match-img" src="https://via.placeholder.com/150" alt=""-->
+                            <form id="note-form" method="post" class="">
+                              <div class="form-group">
+                                <label for="previous-notes-text" class="col-form-label">Previous Notes:</label>
+                                <input type="text" class="form-control" id="previous-notes-text">
+                              </div>
+                              <div class="form-group">
+                                <label for="article-note-text" class="col-form-label">Article Note:</label>
+                                <textarea class="form-control" id="article-note-text" placeholder="Enter article note."></textarea>
+                              </div>
+                              <!--button id="note-submit-btn" type="submit">Submit</button-->
+                            </form>
                           </div>
                           <!--img-->
                         </div>
@@ -110,6 +122,7 @@
 
                   <!--SECTION 3: FOOTER-->
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" id="modal-submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
                 </div>
                 <!--Modal Footer-->
               </div>
@@ -137,6 +150,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 <!--script src="/assets/javascript/index.js"></script-->
 <script src="/js/scrape.js"></script>
+<script src="/js/modal.js"></script>
 
 </body>
 
