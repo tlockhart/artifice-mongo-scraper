@@ -209,18 +209,16 @@ module.exports = function(app) {
         console.log("NOTES ID = "+id);
         db.Article.find({"_id": id})
         // Specify that we want to populate the retrieved users with any associated notes
-        .populate("notes")
+        .populate("note")
         .then(function(data){
 
             console.log("htmlRoutes.js -/saved: "+data.length);
-            //var data = {doc};
             if(data.length > 0){
-                //res.render("saved", {articles: data, current: true});
+                //send the data back to the front end that called the get
                 res.json(data);
             }
             else{
-                console.log("No Notes Found");
-               // res.render("saved");
+                //console.log("No Notes Found");
             }          
         })
         .catch(function(error){

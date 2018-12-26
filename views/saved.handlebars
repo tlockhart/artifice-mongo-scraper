@@ -20,3 +20,86 @@
       </div>
     </div>
   {{/if}}
+  <!---MODAL GOES HERE-->
+    <div id="article-note-modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal content-->
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <div class="justify-content-center modal-header">
+
+                  <!--SECTION 1: HEADER-->
+                  <h2 class="modal-title"><strong>Article Notes</strong></h2>
+                </div>
+                <!--Modal Header-->
+                <div class="row">
+                  <div class="col">
+                  </div>
+                  <!--col-->
+                  <div class="col-10 justify-self-center">
+                    <div class="modal-body">
+
+                      <!--SECTION 2: BODY-->
+                      <div class="row">
+                        <div class="col">
+                        </div>
+                        <div class="col-10">
+                          <div>
+                            <!--col-->
+                            <!--h2 id="match-name"></h2-->
+                          </div>
+                          <div>
+                            <!--img class="img-fluid" id="match-img" src="https://via.placeholder.com/150" alt=""-->
+                            <form id="note-form" method="post" class="">
+                              <p class="mb-0 py-2 font-weight-bold">Previous Notes:</p>
+                              <div class="form-group" id="previous-notes">
+                                <!--label for="previous-notes-text" class="col-form-label">Previous Notes:</label-->
+                                      <!--input type="text" class="form-control" id="previous-notes-text" placehoder="Enter test" val = ""-->
+                              </div>
+                              <div class="form-group">
+                                <label for="article-note-text" class="col-form-label font-weight-bold">New Article Note:</label>
+                                <textarea class="form-control" id="article-note-text" placeholder="Enter a new article note."></textarea>
+                              </div>
+                              <!--button id="note-submit-btn" type="submit">Submit</button-->
+                            </form>
+                          </div>
+                          <!--img-->
+                        </div>
+                        <!--col-10-->
+                        <div class="col">
+                        </div>
+                        <!--col-->
+                      </div>
+                      <!--row-->
+                    </div>
+                    <!--Modal Body-->
+                  </div>
+                  <!--col10-->
+                  <div class="col">
+                  </div>
+                  <!--col-->
+                </div>
+                <!--row-->
+                <div class="modal-footer">
+
+                  <!--SECTION 3: FOOTER-->
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" id="modal-submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                </div>
+                <!--Modal Footer-->
+              </div>
+              <!--column-->
+            </div>
+            <!--row-->
+          </div>
+          <!--Container fluid-->
+        </div>
+        <!--Modal Content-->
+      </div>
+      <!--Modal-Dialog-->
+    </div>
+    <!--Results Modal-->
+    <!-- Modal -->
+<!---END OF MODAL--->

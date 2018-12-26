@@ -7,12 +7,12 @@ $(document).ready(function () {
         console.log("******************");
         console.log("ArticleToSave = "+articleId);
         console.log("******************");
-        getNotesById(articleId);
+        displayNotesById(articleId);
     });
     /************************************************
      * Return all notes associated with an article Id
      ************************************************/
-    function getNotesById(data){
+    function displayNotesById(data){
           $.ajax("/notes/"+data, {
             type: "GET",
             //data: data //Pass the artist object
@@ -20,6 +20,32 @@ $(document).ready(function () {
           .then(function(data){
               //location.replace("/articles");
               console.log("Returned data = " + JSON.stringify(data));
+              //Clear data on form first:
+              clearModalFormInput();
+              date = (data[0].updated);
+              if(data[0].note[0]){
+                  console.log("Note = "+ data[0].note[0].body);
+                //$("#previous-notes-text").val(data[0].note[0].body);
+                data[0].note.forEach(function(eachItem){
+                    console.log(eachItem);
+                    //var $note = $("<input type='text' class='form-control' id='previous-notes-text' placehoder='Enter test' val = ''>");
+                    var $note =$("<p>");
+                    $note.text(date.substring(0, date.indexOf('T'))+" - "+eachItem.body);
+                    //$note.val(date.substring(0, date.indexOf('T'))+" - "+eachItem.body);
+                    $("#previous-notes").append($note);
+                })
+                /*var $note = $("<input type='text' class='form-control' id='previous-notes-text' placehoder='Enter test' val = ''>");
+                $note.val(data[0].note[0].body);
+                $("#previous-notes").append($note);*/
+              }
+              else 
+              {
+                console.log("No notes found!");
+                var $note =$("<p>");
+                    $note.text("No previous notes found.");
+                    //$note.val(date.substring(0, date.indexOf('T'))+" - "+eachItem.body);
+                    $("#previous-notes").append($note);
+              }
               
               // Show the modal 
               $("#article-note-modal").modal("toggle");
@@ -61,9 +87,15 @@ $(document).ready(function () {
         })
         .then(function(){
             //location.replace("/");
+            //clear the textarea in the model:
+            clearModalFormInput();
         })
         .catch(function(error){
             console.log("error = "+error);
         });
-    } //setArticlesStatus
+    } //insertPackage
+    function clearModalFormInput(){
+        $("#article-note-text").val("");
+        $("#previous-notes").empty();
+    }
 });//document on ready
