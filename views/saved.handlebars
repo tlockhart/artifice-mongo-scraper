@@ -4,24 +4,13 @@
       <div class="card-header">
         <h3>
           <a class="article-link" target="_blank" rel="noopener noreferrer" href="{{ this.url }}">{{ this.title }}</a>
-          <a class="btn btn-success note">Article Note</a><a class="btn btn-success delete">Delete Article</a>
+          <a class="btn btn-success note" data-id="{{ this.id }}">Article Note</a><a class="btn btn-danger delete">Delete Article</a>
         </h3>
       </div>
       <div class="card-body">{{ this.summary }}</div>
     </div>
-    {{/each}}
-    {{else}}
-    <div class="container">
-      <div class="row">
-        <div class="col-12 text-center">
-          <h2 class="text-center"> No saved articles have been found. </h2>
-          <a class="btn btn-danger scrape" href="/">SCRAPE New ARTICLES</a>
-        </div>
-      </div>
-    </div>
-  {{/if}}
-  <!---MODAL GOES HERE-->
-    <div id="article-note-modal" class="modal fade" role="dialog">
+      <!---MODAL GOES HERE-->
+    <div id="article-note-modal-{{ this.id }}" class="modal fade" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
           <!-- Modal content-->
@@ -54,13 +43,13 @@
                             <!--img class="img-fluid" id="match-img" src="https://via.placeholder.com/150" alt=""-->
                             <form id="note-form" method="post" class="">
                               <p class="mb-0 py-2 font-weight-bold">Previous Notes:</p>
-                              <div class="form-group" id="previous-notes">
+                              <div class="form-group" id="previous-notes-{{ this.id }}">
                                 <!--label for="previous-notes-text" class="col-form-label">Previous Notes:</label-->
                                       <!--input type="text" class="form-control" id="previous-notes-text" placehoder="Enter test" val = ""-->
                               </div>
                               <div class="form-group">
                                 <label for="article-note-text" class="col-form-label font-weight-bold">New Article Note:</label>
-                                <textarea class="form-control" id="article-note-text" placeholder="Enter a new article note."></textarea>
+                                <textarea class="form-control" id="article-note-text-{{ this.id }}" placeholder="Enter a new article note."></textarea>
                               </div>
                               <!--button id="note-submit-btn" type="submit">Submit</button-->
                             </form>
@@ -86,7 +75,7 @@
 
                   <!--SECTION 3: FOOTER-->
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" id="modal-submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                  <button type="submit" class="btn btn-primary modal-submit" data-id = "{{ this.id }}" data-dismiss="modal">Submit</button>
                 </div>
                 <!--Modal Footer-->
               </div>
@@ -101,5 +90,15 @@
       <!--Modal-Dialog-->
     </div>
     <!--Results Modal-->
-    <!-- Modal -->
 <!---END OF MODAL--->
+    {{/each}}
+    {{else}}
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2 class="text-center"> No saved articles have been found. </h2>
+          <a class="btn btn-danger scrape" href="/">SCRAPE New ARTICLES</a>
+        </div>
+      </div>
+    </div>
+  {{/if}}

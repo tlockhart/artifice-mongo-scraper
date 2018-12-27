@@ -1,28 +1,35 @@
 $(document).ready(function () {
+    var unmarked = 0;
+    var saved = 1;
+    var hidden = 2;
 
-    /*$(".scrape-new").on("click", function (event) {
+    //Scrape new articles:
+    $(".scrape-new").on("click", function (event) {
         //preventDefault Behavior
         event.preventDefault();
         $.get("/scrape", function (data) {
-            // For each one
-        });//display articles
-    });//.scrape-new on click*/
-    /*$(".clear").on("click", function (event) {
-        event.preventDefault();
-        // Empty the notes from the note section
-        $(".article-container").empty();
-    });*/
-    var unsaved = 0;
-    var saved = 1;
-    var deleted = 3;
-
+            location.replace("/");
+            //console.log("Scraped Data = "+data);
+       });
+    });//.scrape-new on clic
+    //set all new articles to hidden
     $(".clear").on("click", function (event) {
         event.preventDefault();
-        setArticlesStatus(deleted);
+        setArticlesStatus(hidden);
     });
+    //set a saved article to new
+    $(".delete").on("click", function (event) {
+        event.preventDefault();
+        var articleId = $(this).parent().parent().parent().attr("data-id");
+        console.log("******************");
+        console.log("ArticleToSave = "+articleId);
+        console.log("******************");
+        setSingleArticleStatus(articleId, unmarked);
+    });
+    //set all hidden articles to new.
     $(".unhide").on("click", function (event) {
         event.preventDefault();
-        setArticlesStatus(unsaved);
+        setArticlesStatus(unmarked);
     });
    
     /***************************************
@@ -36,13 +43,30 @@ $(document).ready(function () {
           data: {status: status} //Pass the artist object
         })
         .then(function(){
-            //location.replace("/");
+            location.replace("articles");
         })
         .catch(function(error){
             console.log("error = "+error);
         });
     } //setArticlesStatus
 
+    function setSingleArticleStatus(id, status){
+        data = {
+            id: id,
+            status: status
+        }
+        $.ajax("/update-single-article", {
+            type: "PUT",
+            data: data //Pass the artist object
+          })
+          .then(function(){
+              //location.replace("/");
+              location.replace("/saved");
+          })
+          .catch(function(error){
+              console.log("error = "+error);
+          });
+    }
     $(".save").on("click", function (event) {
         event.preventDefault();
         //var articleId = $(this).attr("data-id");

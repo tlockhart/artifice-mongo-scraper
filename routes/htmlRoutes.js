@@ -6,33 +6,11 @@ var cheerio = require("cheerio");
 var db = require("../models");
 
 module.exports = function(app) {
-    /******************
-     * HELPER FUNCTIONS
-     ******************/
-    /*************************************************
-     * CALLBACK
-     * Purpose: Returns data from the called subroutine
-     * To delay program execution.
-     ************************************************/
-    function callback(data){
-        //console.log("htmlRoutes.js - CALLBACK: DATA = "+JSON.stringify(data));
-        return data;
-    }//callback
-    /***************************************************************
-     * Name: getScrapedData
-     * Purpose: Get all articles from the artifice website and
-     * determines which ones are not in the database.
-     * Calls: insertData to insert articles not in database.
-     ***************************************************************/
-    function getScrapedData() {
-        var data;
-        
-    }//getScrapedData
     /***********************************************************
      * Name: insertData
      * Purpose: Insert new articles into the Article collection
     ************************************************************/
-    function insertData(data, db) {
+    function insertData(data, db, res) {
         //use artifice_db;
         for (var i = 0; i < data.length; i++ )
         {
@@ -55,6 +33,15 @@ module.exports = function(app) {
             .catch(function(error){
                 console.log(error);
             });
+
+            /*******************************************************
+             * IMPORTANT: PAGE SHOULD NOT DISPLAY THE DATA UNTIL ALL
+             * THE RECORDS HAVE BEEN LOADED INTO THE ARTICLES DB
+             * *****************************************************/
+            if(i === (data.length-1))
+            {
+                res.redirect("/articles");
+            }
         }//for
         console.log("Insert Complete"); 
     }//InsertData
@@ -83,9 +70,10 @@ module.exports = function(app) {
                 var image = $(element).find(".post-img-td").find(".post-img").find("a").children("img").attr("src");
 
                 /************************************************************************
-                 * Save new articles to an object For display.  The record's status
-                 * will be set to 0 by default, indicating they have not been saved.  When 
-                 * the save button is clicked the status will be updated to 1 for saved.
+                 * IMPORTANT: Save new articles to an object For display.  The record's 
+                 * status will be set to 0 by default, indicating they have not been saved.
+                 * When the save button is clicked the status will be updated to 1 for 
+                 * saved.
                  * **********************************************************************/
                 if (title !== "") {
                     scrapedArticles.push({
@@ -107,9 +95,9 @@ module.exports = function(app) {
             /**********************************************
              * Insert new articles into articles collection
              * ********************************************/
-            insertData(scrapedArticles, db);
+            insertData(scrapedArticles, db, res);
         })//axios get request
-        res.redirect("/articles");
+        //res.redirect("/articles");
     });//get index
 
     //2.Pull new articles from the database and display to screen
@@ -137,13 +125,13 @@ module.exports = function(app) {
     app.put("/update-articles-status", function(req, res) {
         var newStatus = parseInt(req.body.status);
         var oldStatus = 0;
-        if(newStatus === 3)
+        if(newStatus === 2)
         {
             oldStatus = 0;
         }
         else if(newStatus === 0)
         {
-            oldStatus = 3;
+            oldStatus = 2;
         }else if(newStatus === 1)
         {
             oldStatus = 0;
@@ -169,12 +157,8 @@ module.exports = function(app) {
           console.log("ID = "+id +", STATUS = "+status);
           db.Article.findOneAndUpdate({"_id": id}, {$set: {"status": status}})
           .then(function() {
-            //res.redirect("/articles");
             console.log("/update-single-article save article");
             res.status(200).send("ok");
-            //res.redirect("/");
-            //res.redirect("/articles");
-            //res.render("/articles");
           })
           // eslint-disable-next-line prettier/prettier
           .catch(function( error ) {
@@ -196,12 +180,12 @@ module.exports = function(app) {
                 console.log("In else");
                 res.render("saved");
             }
-           
+
         })
         .catch(function(error){
             console.log(error);
         });
-    }); // /articles route
+    }); //articles route
     
     //6. Display the note and populate it with the data saved.
     app.get("/notes/:id", function(req, res) {
@@ -218,17 +202,15 @@ module.exports = function(app) {
                 res.json(data);
             }
             else{
-                //console.log("No Notes Found");
+                console.log("No Notes Found");
             }          
         })
         .catch(function(error){
             console.log(error);
         });
       });//POST
-      //7. Insert new record into DB
-      //6. Display the note and populate it with the data saved.
+      //7. Insert new record into the Notes Collection and populate it in the Articles Collection
     app.post("/insert-note", function(req, res) {
-        //var id = req.params.id;
         var id = req.body.id;
         var title = req.body.title;
         var body = req.body.body;
@@ -250,31 +232,26 @@ module.exports = function(app) {
                 // If an error occurs, send it back to the client
                 res.json(err);
             });
-        /*db.Article.find({"_id": id})
-        // Specify that we want to populate the retrieved users with any associated notes
-        .populate("notes")
-        .then(function(data){
-
-            console.log("htmlRoutes.js -/saved: "+data.length);
-            //var data = {doc};
-            if(data.length > 0){
-                //res.render("saved", {articles: data, current: true});
-                res.json(data);
-            }
-            else{
-                console.log("No Notes Found");
-               // res.render("saved");
-            }          
-        })
-        .catch(function(error){
-            console.log(error);
-        });*/
       });//POST
-//DONT WORRY ABOUT FOR NOW
-    /****************************************************************************/
-     // A GET route for scraping the artifice website
+      // A GET route for scraping the artifice website
      app.get("/scrape", function (req, res) {
-        /*************************************************************/
+        /*************************************************************
+
+        // First, tell the console what server.js is doing
+        console.log("\n***********************************\n" +
+        "Grabbing every thread name and link\n" +
+        "from The Artifice:" +
+        "\n***********************************\n");
+         console.log ("UnSaved Data = "+ JSON.stringify(data));
+        console.log("htmlRoutes.js - /scrape : Scrape and DB Query Complete!");*/
+        res.status(200).send("ok");
+        //res.render("/");
+    
+    });//Get /scraper
+//DONT WORRY ABOUT FOR NOW
+/****************************************************************************/
+     // A GET route for scraping the artifice website
+     /*app.get("/scrape", function (req, res) {
         console.log("htmlRoutes.js - /scrape: saveArticles = "+JSON.stringify(savedArticles));
         // First, tell the console what server.js is doing
         console.log("\n***********************************\n" +
@@ -283,14 +260,11 @@ module.exports = function(app) {
         "\n***********************************\n");
          var data = getScrapedData();
          console.log ("UnSaved Data = "+ JSON.stringify(data));
-        /*console.log("DATABASE ARTICLES  ="+savedArticles);*/
         console.log("htmlRoutes.js - /scrape : Scrape and DB Query Complete!");
         res.render("index", data);
     
-    });//Get /scraper
+    });//Get /scraper*/
      /****************************************************************************/
-  
-
    /* // gets unsaved, unhidden articles from db and displays them
     app.get("/articles", function (req, res) {
         db.Article.find({ "status": 0 }, function (err, data) {
