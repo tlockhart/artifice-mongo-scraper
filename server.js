@@ -42,8 +42,11 @@ var databaseUrl = "artifice_db";
 var collections = ["articles"];
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/artifice_db", { useNewUrlParser: true });
- 
+//mongoose.connect("mongodb://localhost/artifice_db", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/artifice_db";
+
+mongoose.connect(MONGODB_URI);
+
 // Set the app to listen on port 3000
 app.listen(3000, function() {
   console.log("App running on port http://localhost:3000/");
