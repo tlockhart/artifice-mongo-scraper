@@ -48,7 +48,8 @@ html {
   .jumbotron .background-image {
     height: 100%;
     /*background-image: url("../images/newspaper.jpg");*/
-    background-image: url("../images/women.jpeg");
+    /*background-image: url("../images/women.jpeg");I*/
+    background-image: url("../images/thequeen.jpg");
     background-size: cover;
   }
   
