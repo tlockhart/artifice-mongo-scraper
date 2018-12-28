@@ -11,19 +11,21 @@ $(document).ready(function () {
             location.replace("/");
             //console.log("Scraped Data = "+data);
        });
-    });//.scrape-new on clic
+    });//.scrape-new on click
+
     //set all new articles to hidden
     $(".clear").on("click", function (event) {
         event.preventDefault();
         setArticlesStatus(hidden);
     });
+
     //set a saved article to new
     $(".delete").on("click", function (event) {
         event.preventDefault();
         var articleId = $(this).parent().parent().parent().attr("data-id");
-        console.log("******************");
+        /*console.log("******************");
         console.log("ArticleToSave = "+articleId);
-        console.log("******************");
+        console.log("******************");*/
         setSingleArticleStatus(articleId, unmarked);
     });
     //set all hidden articles to new.
@@ -37,7 +39,6 @@ $(document).ready(function () {
      **************************************/
     function setArticlesStatus(status) {
         //console.log("CREATEPROFILE.js: " + JSON.stringify(artist));
-        //$.ajax("/api/create-profile", {
         $.ajax("/update-articles-status", {
           type: "PUT",
           data: {status: status} //Pass the artist object
@@ -64,27 +65,29 @@ $(document).ready(function () {
               location.replace("/saved");
           })
           .catch(function(error){
-              console.log("error = "+error);
+              //console.log("error = "+error);
           });
     }
+    
+    //change article status to saved
     $(".save").on("click", function (event) {
         event.preventDefault();
         //var articleId = $(this).attr("data-id");
         var articleId = $(this).parent().parent().parent().attr("data-id");
-        var articleOldStatus = $(this).parent().parent().parent().attr("data-status");
+        //var articleOldStatus = $(this).parent().parent().parent().attr("data-status");
         var articleNewStatus = saved;
-        console.log("******************");
+        /*console.log("******************");
         console.log("ArticleToSave = "+articleId);
         console.log("ArticleOldStatus = "+articleOldStatus);
         console.log("ArticleNewStatus = "+articleNewStatus);
-        console.log("******************");
+        console.log("******************");*/
         var data = {
             id: articleId,
-            //oldStatus: articleOldStatus,
             status: articleNewStatus
         }
         setSingleArticle(data);
     });
+
     /***************************************
      * Update the status of a single article
      ***************************************/

@@ -1,7 +1,13 @@
 /* eslint-disable no-unused-vars */
+//const
+const unmarked = 0;
+const saved = 1;
+const hidden = 2;
+    
 //dependencies
 var axios = require("axios");
 var cheerio = require("cheerio");
+
 // Require all models
 var db = require("../models");
 
@@ -26,12 +32,12 @@ module.exports = function(app) {
                    // console.log("Story already in db");
                 }
                 else{
-                    console.log(title);
+                    //console.log(title);
                     db.Article.create({ "title": title, "summary": summary, "url": url, "image": image })
                 }
             })
             .catch(function(error){
-                console.log(error);
+                //console.log(error);
             });
 
             /*******************************************************
@@ -43,7 +49,7 @@ module.exports = function(app) {
                 res.redirect("/articles");
             }
         }//for
-        console.log("Insert Complete"); 
+        //console.log("Insert Complete"); 
     }//InsertData
     /**************************************************************/
     /*****************
@@ -87,10 +93,10 @@ module.exports = function(app) {
 
             /*Log the scrapedArticles once you've looped 
             through each element found with cheerio*/
-            console.log();
-            //console.log("SCRAPED ARTICLES  =" + JSON.stringify(scrapedArticles));
+            /*console.log();
+            console.log("SCRAPED ARTICLES  =" + JSON.stringify(scrapedArticles));*/
             var data = {scrapedArticles};
-            console.log(data);
+            //console.log(data);
 
             /**********************************************
              * Insert new articles into articles collection
@@ -105,48 +111,46 @@ module.exports = function(app) {
         db.Article.find({"status": 0})
         .then(function(data){
 
-            console.log("htmlRoutes.js -/articles: "+data.length);
-            //var data = {doc};
+            //console.log("htmlRoutes.js -/articles: "+data.length);
             if(data.length > 0){
                 res.render("index", {articles: data, current: true});
             }
             else{
-                console.log("In else");
+                //console.log("In else");
                 res.render("index");
             }
            
         })
         .catch(function(error){
-            console.log(error);
+            //console.log(error);
         });
     }); // /articles route
 
     //3. Update all articles status
     app.put("/update-articles-status", function(req, res) {
         var newStatus = parseInt(req.body.status);
-        var oldStatus = 0;
-        if(newStatus === 2)
+        var oldStatus = unmarked;
+
+        if(newStatus === hidden)
         {
-            oldStatus = 0;
+            oldStatus = unmarked;
         }
-        else if(newStatus === 0)
+        else if(newStatus === unmarked)
         {
-            oldStatus = 2;
-        }else if(newStatus === 1)
+            oldStatus = hidden;
+        }else if(newStatus === saved)
         {
-            oldStatus = 0;
+            oldStatus = unmarked;
         }
         
-        console.log("NEWSTATUS = "+newStatus +", OLDSTATUS = "+oldStatus);
+        //console.log("NEWSTATUS = "+newStatus +", OLDSTATUS = "+oldStatus);
         db.Article.updateMany({"status": oldStatus}, {$set: {"status": newStatus}})
           .then(function() {
-            //res.status(200).send("ok");
-            //res.redirect("/articles");
             res.render("index");
           })
           // eslint-disable-next-line prettier/prettier
           .catch(function( error ) {
-            console.log("htmlRoutes.js: Could not update status of articles = " + error);
+            //console.log("htmlRoutes.js: Could not update status of articles = " + error);
           });
       });// /update-article-status
 
@@ -154,59 +158,56 @@ module.exports = function(app) {
       app.put("/update-single-article", function(req, res) {
           var id = req.body.id;
           var status = req.body.status;
-          console.log("ID = "+id +", STATUS = "+status);
+          //console.log("ID = "+id +", STATUS = "+status);
           db.Article.findOneAndUpdate({"_id": id}, {$set: {"status": status}})
           .then(function() {
-            console.log("/update-single-article save article");
+           //console.log("/update-single-article save article");
             res.status(200).send("ok");
           })
           // eslint-disable-next-line prettier/prettier
           .catch(function( error ) {
-            console.log("htmlRoutes.js: Could not update unsaved articles = " + error);
+            //console.log("htmlRoutes.js: Could not update unsaved articles = " + error);
           });
       });
 
       //5. Display all saved articles
       app.get("/saved", function (req, res) {
-        db.Article.find({"status": 1})
+        db.Article.find({"status": saved})
         .then(function(data){
-
-            console.log("htmlRoutes.js -/saved: "+data.length);
-            //var data = {doc};
+            //console.log("htmlRoutes.js -/saved: "+data.length);
             if(data.length > 0){
                 res.render("saved", {articles: data, current: true});
             }
             else{
-                console.log("In else");
+                //console.log("In else");
                 res.render("saved");
             }
 
         })
         .catch(function(error){
-            console.log(error);
+            //console.log(error);
         });
     }); //articles route
     
     //6. Display the note and populate it with the data saved.
     app.get("/notes/:id", function(req, res) {
         var id = req.params.id;
-        console.log("NOTES ID = "+id);
+        //console.log("NOTES ID = "+id);
         db.Article.find({"_id": id})
         // Specify that we want to populate the retrieved users with any associated notes
         .populate("note")
         .then(function(data){
-
-            console.log("htmlRoutes.js -/saved: "+data.length);
+            //console.log("htmlRoutes.js -/saved: "+data.length);
             if(data.length > 0){
                 //send the data back to the front end that called the get
                 res.json(data);
             }
             else{
-                console.log("No Notes Found");
+                //console.log("No Notes Found");
             }          
         })
         .catch(function(error){
-            console.log(error);
+           //console.log(error);
         });
       });//POST
       //7. Insert new record into the Notes Collection and populate it in the Articles Collection
@@ -214,8 +215,8 @@ module.exports = function(app) {
         var id = req.body.id;
         var title = req.body.title;
         var body = req.body.body;
+        //console.log("NOTES ID = " + id + " body = " + body);
 
-        console.log("NOTES ID = " + id + " body = " + body);
         // Create a new Note in the db
         db.Note.create({ "title": title, "body": body})
             .then(function (dbNote) {
@@ -248,6 +249,8 @@ module.exports = function(app) {
         //res.render("/");
     
     });//Get /scraper
+
+ /****************************************************************************/   
 //DONT WORRY ABOUT FOR NOW
 /****************************************************************************/
      // A GET route for scraping the artifice website

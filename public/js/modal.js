@@ -1,13 +1,13 @@
 $(document).ready(function () {
     //Display article-note-modal
-    //Get the notes that are available for this record and display in a modal
+    //Get the notes that are available for this record and display in the modal
     $(".note").on("click", function (event) {
         event.preventDefault();
         //var articleId = $(this).parent().parent().parent().attr("data-id");
         var articleId = $(this).data("id");
-        console.log("******************");
+        /*console.log("******************");
         console.log("ArticleToSave = "+articleId);
-        console.log("******************");
+        console.log("******************");*/
         displayNotesById(articleId);
     });
     /************************************************
@@ -18,15 +18,15 @@ $(document).ready(function () {
             type: "GET",
           })
           .then(function(data){
-              console.log("Returned data = " + JSON.stringify(data));
+              //console.log("Returned data = " + JSON.stringify(data));
               //Clear data on form first:
               clearModalFormInput(articleId);
               
               if(data[0].note[0]){
                 var date = (data[0].updated);
-                  console.log("Note = "+ data[0].note[0].body);
+                //console.log("Note = "+ data[0].note[0].body);
                 data[0].note.forEach(function(eachItem){
-                    console.log(eachItem);
+                    //console.log(eachItem);
                     var $note =$("<p>");
                     $note.text(date.substring(0, date.indexOf('T'))+" - "+eachItem.body);
                     $("#previous-notes-"+data[0]._id).append($note);                   
@@ -34,28 +34,26 @@ $(document).ready(function () {
               }
               else 
               {
-                //console.log("No notes found!");
-                var $note =$("<p>");
-                    $note.text("No previous notes found.");
-                    console.log("MODAL.jS: ELSE - ID = "+articleId);
-                    $("#previous-notes-"+articleId).append($note);
+                  var $note = $("<p>");
+                  $note.text("No previous notes found.");
+                  //console.log("MODAL.jS: NO NOTES FOUND - ID = "+articleId);
+                  $("#previous-notes-" + articleId).append($note);
               }
               // Show the modal 
               $("#article-note-modal-"+articleId).modal("toggle");
           })
           .catch(function(error){
-              console.log("error = "+error);
+              //console.log("error = "+error);
           });
     }
     //Wrap the note into a package and send it on its way
     $('.modal-submit').on('click', function (event) {
        
        var $articleId = $(this).data("id");
-       //var $articleId = $(this).attr("data-id");
-       console.log("$article id = "+$articleId);
+       //console.log("modal.js: $article id = "+$articleId);
        var $noteInput =  $('#article-note-text-'+$articleId).val();
        var $articleTitle = $(this).data("title");
-       console.log("Article Note = "+$noteInput+" Article Id = "+$articleId);
+       //console.log("Article Note = "+$noteInput+" Article Id = "+$articleId);
 
        var notePackage = {
            body: $noteInput,
@@ -84,7 +82,7 @@ $(document).ready(function () {
             });
     } //insertPackage
     function clearModalFormInput(id) {
-        console.log("Clear package = "+id);
+        //console.log("Clear package = "+id);
         $("#article-note-text-"+id).val("");
         $("#previous-notes-"+id).empty();
     }

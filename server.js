@@ -4,14 +4,14 @@
 // Dependencies
 var express = require("express");
 var exphbs = require("express-handlebars");
-//var mongojs = require("mongojs");
 var mongoose = require("mongoose");
 //var logger = require("morgan");
 
 var db = require("./models");
 
-// Initialize Express
+//Initialize Express
 var app = express();
+
 //Set Port
 var PORT = process.env.PORT || 3000;
 
