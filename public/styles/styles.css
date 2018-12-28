@@ -55,7 +55,8 @@ html {
   
   .jumbotron .caption {
     position: absolute;
-    top: 30%;
+    /*top: 30%;*/
+    top: 0%;
     width: 100%;
     text-align: center;
   }
