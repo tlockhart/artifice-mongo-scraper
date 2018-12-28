@@ -48,7 +48,7 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/artifice_db";
 mongoose.connect(MONGODB_URI);
 
 // Set the app to listen on port 3000
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("App running on port http://localhost:3000/");
 });
 
