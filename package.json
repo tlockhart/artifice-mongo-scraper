@@ -18,13 +18,11 @@
   },
   "homepage": "https://github.com/tlockhart/artifice-mongo-scraper#readme",
   "dependencies": {
-    "async": "^2.6.1",
-    "axiom": "^0.1.6",
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
-    "mongoose": "^5.4.0",
-    "morgan": "^1.9.1"
+    "moment": "^2.23.0",
+    "mongoose": "^5.4.0"
   }
 }

@@ -23,12 +23,21 @@ $(document).ready(function () {
               clearModalFormInput(articleId);
               
               if(data[0].note[0]){
-                var date = (data[0].updated);
-                //console.log("Note = "+ data[0].note[0].body);
+                //var date = (data[0].updated);
+                /*console.log("Note = "+ data[0].note[0].body);
+                console.log("data = "+ JSON.stringify(data));*/
                 data[0].note.forEach(function(eachItem){
                     //console.log(eachItem);
                     var $note =$("<p>");
-                    $note.text(date.substring(0, date.indexOf('T'))+" - "+eachItem.body);
+                    var date = eachItem.createdAt;
+                    var stringDate = date.substring(0,date.indexOf('T'));
+                    //var stringDate = date.substring(0, date.indexOf('T'));
+
+                    $note.text(stringDate+ " - "  +eachItem.body);
+                    //var mongoDate = new Date(date);
+                    
+                    //var stringDate = moment(date).format('YYYY-DD-MM');
+                    //$note.text(stringDate);
                     $("#previous-notes-"+data[0]._id).append($note);                   
                 })
               }
@@ -60,8 +69,25 @@ $(document).ready(function () {
            id: $articleId,
            title: $articleTitle
        };
-       //Post notePackage to db
-        insertPackage(notePackage);
+       //Display the modal
+       $('#article-note-modal-'+$articleId).show();
+       var noteIsBlank = false;
+
+       //Note ErrorHandling Routine
+        if ($('#article-note-text-'+$articleId).val().trim() === "") {
+          noteIsBlank = true;
+          //console.log("NOTEISBLANK = "+noteIsBlank);
+        }
+        if(noteIsBlank){
+          $('#article-note-text-'+$articleId).css({ "border-color": "red" });
+          $(this).removeAttr('data-dismiss');
+          noteIsBlank = false;
+        } else {
+            $('#article-note-text-'+$articleId).css({ "border-color": "" });
+            //Post notePackage to db
+            $(this).attr('data-dismiss', "modal");
+            insertPackage(notePackage);
+        }       
     });
 
     /***************************************

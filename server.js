@@ -54,3 +54,4 @@ app.listen(PORT, function() {
 
 //MUST EXPORT APP FOR REQ.BODY TO WORK
 module.exports = app;
+//module.exports = moment;
