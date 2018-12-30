@@ -23,22 +23,30 @@ $(document).ready(function () {
               clearModalFormInput(articleId);
               
               if(data[0].note[0]){
-                //var date = (data[0].updated);
                 /*console.log("Note = "+ data[0].note[0].body);
                 console.log("data = "+ JSON.stringify(data));*/
                 data[0].note.forEach(function(eachItem){
                     //console.log(eachItem);
-                    var $note =$("<p>");
+                    var $divElem = $("<div>");
+                    $divElem.attr("id", "div-"+eachItem._id);
+
                     var date = eachItem.createdAt;
                     var stringDate = date.substring(0,date.indexOf('T'));
-                    //var stringDate = date.substring(0, date.indexOf('T'));
 
+                    var $note =$("<p>");
+                    $note.attr("id", eachItem._id);
                     $note.text(stringDate+ " - "  +eachItem.body);
-                    //var mongoDate = new Date(date);
-                    
-                    //var stringDate = moment(date).format('YYYY-DD-MM');
-                    //$note.text(stringDate);
-                    $("#previous-notes-"+data[0]._id).append($note);                   
+
+                    $deleteBtn = $('<button type = "button" class = "btn btn-danger delete-note">');
+                    $deleteBtn.attr("data-id", eachItem._id);
+                    $deleteBtn.html("X");
+
+                    $divElem.append($note); 
+                    $divElem.append($deleteBtn);
+                    $("#previous-notes-"+data[0]._id).append($divElem);
+
+                    $note.css('display', 'inline-block');   
+                    $note.css('margin-right', '10px');             
                 })
               }
               else 
@@ -99,7 +107,7 @@ $(document).ready(function () {
             data: package //Pass the artist object
         })
             .then(function (data) {
-                console.log("INSERT Package = "+data);
+                //console.log("INSERT Package = "+data);
                 //clear the textarea in the model:
                 clearModalFormInput(package.id);
             })
@@ -112,4 +120,29 @@ $(document).ready(function () {
         $("#article-note-text-"+id).val("");
         $("#previous-notes-"+id).empty();
     }
+    /**************
+     * Delete Note
+     **************/
+    //Delete button not on page during page load, so add listener to closest parent
+    //$(".delete-note").on("click", function (event) {
+    $(document).on("click", ".delete-note", function(event){
+        var $noteId = $(this).data("id");
+        /*console.log("IN THE DELETE NODE");
+        console.log("BTN ID = "+$noteId);*/
+        deleteNote($noteId);
+        $("#div-"+$noteId).remove();
+    });
+    //delete the matching note from the notes collection
+    function deleteNote(id){
+        $.ajax("/delete-note", {
+            type: "DELETE",
+            data: {id: id} //Pass the artist object
+        })
+            .then(function (data) {
+                //console.log("DELETE Package = "+data);
+            })
+            .catch(function (error) {
+                console.log("error = " + error);
+            });
+    } //insertPackage
 });//document on ready

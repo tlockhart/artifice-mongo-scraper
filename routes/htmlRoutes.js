@@ -246,85 +246,19 @@ module.exports = function(app) {
          console.log ("UnSaved Data = "+ JSON.stringify(data));
         console.log("htmlRoutes.js - /scrape : Scrape and DB Query Complete!");*/
         res.status(200).send("ok");
-        //res.render("/");
-    
     });//Get /scraper
-
- /****************************************************************************/   
-//DONT WORRY ABOUT FOR NOW
-/****************************************************************************/
-     // A GET route for scraping the artifice website
-     /*app.get("/scrape", function (req, res) {
-        console.log("htmlRoutes.js - /scrape: saveArticles = "+JSON.stringify(savedArticles));
-        // First, tell the console what server.js is doing
-        console.log("\n***********************************\n" +
-        "Grabbing every thread name and link\n" +
-        "from The Artifice:" +
-        "\n***********************************\n");
-         var data = getScrapedData();
-         console.log ("UnSaved Data = "+ JSON.stringify(data));
-        console.log("htmlRoutes.js - /scrape : Scrape and DB Query Complete!");
-        res.render("index", data);
     
-    });//Get /scraper*/
-     /****************************************************************************/
-   /* // gets unsaved, unhidden articles from db and displays them
-    app.get("/articles", function (req, res) {
-        db.Article.find({ "status": 0 }, function (err, data) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.render("index", { articles: data, current: true });
-            }//else
-        });//find
-    });//get articles
-
-  // 2. At the "/all" path, display every entry in the articles collection
-  app.get("/all", function (req, res) {
-    // Query: In our database, go to the articles collection, then "find" everything
-    db.Article.find({}, function (error, found) {
-      // Log any errors if the server encounters one
-      if (error) {
-        console.log(error);
-      }
-      // Otherwise, send the result of this query to the browser
-      else {
-        res.json(found);
-      }//else
-    });//find
-  });//get all
-
-  // 3. At the "/title" path, display every entry in the articles collection, sorted by name
-  app.get("/title", function (req, res) {
-    // Query: In our database, go to the articles collection, then "find" everything,
-    // but this time, sort it by title (1 means ascending order)
-    db.Article.find().sort({ title: 1 }, function (error, found) {
-      // Log any errors if the server encounters one
-      if (error) {
-        console.log(error);
-      }
-      // Otherwise, send the result of this query to the browser
-      else {
-        res.json(found);
-      }
+    app.delete("/delete-note", function (req, res) {
+        var id = req.body.id;
+        //console.log("In delete note = "+id);
+        db.Note.deleteOne({"_id": id})
+          .then(function() {
+           //console.log("/update-single-article save article");
+            res.status(200).send("ok");
+          })
+          // eslint-disable-next-line prettier/prettier
+          .catch(function( error ) {
+            //console.log("htmlRoutes.js: Could not update unsaved articles = " + error);
+          });
     });
-  });
-
-  // 4. At the "/summary" path, display every entry in the articles collection, sorted by weight
-  app.get("/summary", function (req, res) {
-    // Query: In our database, go to the articles collection, then "find" everything,
-    // but this time, sort it by weight (-1 means descending order)
-    db.Article.find().sort({ summary: -1 }, function (error, found) {
-      // Log any errors if the server encounters one
-      if (error) {
-        console.log(error);
-      }
-      // Otherwise, send the result of this query to the browser
-      else {
-        res.json(found);
-      }
-    });
-  });//get*/
-/****************************************************************************/
-
 }; //MODULE EXPORTS
