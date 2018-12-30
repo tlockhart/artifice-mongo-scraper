@@ -1,6 +1,6 @@
 
 <h1 align="center">Artifice Mongo Scraper</h1>
-<p align="center"><kbd><img src ="public/assets/img/sequelized_burger.png" /></kbd></p><br/>
+<p align="center"><kbd><img src ="public/images/mongoscraper.png"/></kbd></p><br/>
 
 This project is a web app that scrapes news articles from The Artifice website.  It allows users to scrape, save, and hide articles.  The articles are stored and updated in a MongoDB database.  In addition the user can add notes to saved articles.
 # Demo
@@ -32,5 +32,5 @@ In order to run the app, you will need to clone this repository and install all 
 # Use
 This repo is available for public non-commercial use only.
 # Goal
-The goal of this project was to create a web scraper using axio and cheerio modules that incoporates REST.   Mongoose and MongoDB was used for REST and data persistence services. In addition, Express in used as middleware, which communicates between the web app and the nodeJs web server.  Expresss Handlebars was used to manage frontend views and templating.
+The goal of this project was to create a web scraper using axio and cheerio modules that incoporates REST and data storage.  Mongoose and MongoDB is used for REST and data persistence, respectively. In addition, Express is used as middleware, which communicates between the web app and the Node.js web server.  Express-Handlebars is used to manage frontend views and templating.
 
