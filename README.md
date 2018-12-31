@@ -2,7 +2,7 @@
 <h1 align="center">Artifice Mongo Scraper</h1>
 <p align="center"><kbd><img src ="public/images/mongoscraper.png"/></kbd></p><br/>
 
-This project is a web app that scrapes news articles from The Artifice website.  It allows users to scrape, save, and hide articles.  The articles are stored and updated in a MongoDB database.  In addition the user can add notes to saved articles.
+This project is a web app that scrapes news articles from [The Artifice](https://the-artifice.com) website.  It allows users to scrape, save, and hide articles.  The articles are stored and updated in a MongoDB database.  In addition the user can add notes to saved articles.
 # Demo
 *https://cryptic-refuge-29521.herokuapp.com/articles<br/>
 # Setup
