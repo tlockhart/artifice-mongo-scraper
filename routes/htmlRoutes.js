@@ -234,20 +234,7 @@ module.exports = function(app) {
                 res.json(err);
             });
       });//POST
-      // A GET route for scraping the artifice website
-     app.get("/scrape", function (req, res) {
-        /*************************************************************
-
-        // First, tell the console what server.js is doing
-        console.log("\n***********************************\n" +
-        "Grabbing every thread name and link\n" +
-        "from The Artifice:" +
-        "\n***********************************\n");
-         console.log ("UnSaved Data = "+ JSON.stringify(data));
-        console.log("htmlRoutes.js - /scrape : Scrape and DB Query Complete!");*/
-        res.status(200).send("ok");
-    });//Get /scraper
-    
+      //8. Delete an article note
     app.delete("/delete-note", function (req, res) {
         var id = req.body.id;
         //console.log("In delete note = "+id);
@@ -260,5 +247,18 @@ module.exports = function(app) {
           .catch(function( error ) {
             //console.log("htmlRoutes.js: Could not update unsaved articles = " + error);
           });
-    });
+    });//delete
+      //9. A GET route for scraping the artifice website, which redirects to "/" in scrape.js"
+     app.get("/scrape", function (req, res) {
+        /*************************************************************
+
+        // First, tell the console what server.js is doing
+        console.log("\n***********************************\n" +
+        "Grabbing every thread name and link\n" +
+        "from The Artifice:" +
+        "\n***********************************\n");
+         console.log ("UnSaved Data = "+ JSON.stringify(data));
+        console.log("htmlRoutes.js - /scrape : Scrape and DB Query Complete!");*/
+        res.status(200).send("ok");
+    });//Get /scraper
 }; //MODULE EXPORTS
