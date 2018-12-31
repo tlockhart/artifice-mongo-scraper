@@ -27,8 +27,9 @@ $(document).ready(function () {
                 console.log("data = "+ JSON.stringify(data));*/
                 data[0].note.forEach(function(eachItem){
                     //console.log(eachItem);
-                    var $divElem = $("<div>");
+                    var $divElem = $('<div>');
                     $divElem.attr("id", "div-"+eachItem._id);
+                    $divElem.addClass("row");
 
                     var date = eachItem.createdAt;
                     var stringDate = date.substring(0,date.indexOf('T'));
@@ -37,16 +38,25 @@ $(document).ready(function () {
                     $note.attr("id", eachItem._id);
                     $note.text(stringDate+ " - "  +eachItem.body);
 
+                    //$row = $('<div> class = "row"');
+                    $col1 = $('<div>');
+                    $col1.addClass("col-10");
+                    $col2 = $('<div>');
+                    $col2.addClass("col-2");
+
                     $deleteBtn = $('<button type = "button" class = "btn btn-danger delete-note">');
                     $deleteBtn.attr("data-id", eachItem._id);
                     $deleteBtn.html("X");
 
-                    $divElem.append($note); 
-                    $divElem.append($deleteBtn);
+                    $col1.append($note); 
+                    $col2.append($deleteBtn);
+                    $divElem.append($col1);
+                    $divElem.append($col2);
+
                     $("#previous-notes-"+data[0]._id).append($divElem);
 
-                    $note.css('display', 'inline-block');   
-                    $note.css('margin-right', '10px');             
+                    $col1.css('display', 'inline-block');   
+                    //$note.css('margin-right', '10px');             
                 })
               }
               else 
