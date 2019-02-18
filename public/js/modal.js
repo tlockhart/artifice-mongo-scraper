@@ -3,30 +3,21 @@ $(document).ready(function () {
     //Get the notes that are available for this record and display in the modal
     $(".note").on("click", function (event) {
         event.preventDefault();
-        //var articleId = $(this).parent().parent().parent().attr("data-id");
         var articleId = $(this).data("id");
-        /*console.log("******************");
-        console.log("ArticleToSave = "+articleId);
-        console.log("******************");*/
         displayNotesById(articleId);
     });
     /************************************************
      * Return all notes associated with an article Id
      ************************************************/
-    function displayNotesById(articleId){
+    function displayNotesById(articleId) {
           $.ajax("/notes/"+articleId, {
             type: "GET",
           })
-          .then(function(data){
-              //console.log("Returned data = " + JSON.stringify(data));
+          .then(function(data) {
               //Clear data on form first:
               clearModalFormInput(articleId);
-              
-              if(data[0].note[0]){
-                /*console.log("Note = "+ data[0].note[0].body);
-                console.log("data = "+ JSON.stringify(data));*/
-                data[0].note.forEach(function(eachItem){
-                    //console.log(eachItem);
+              if(data[0].note[0]) {
+                data[0].note.forEach(function(eachItem) {
                     var $divElem = $('<div>');
                     $divElem.attr("id", "div-"+eachItem._id);
                     $divElem.addClass("row");
@@ -38,7 +29,6 @@ $(document).ready(function () {
                     $note.attr("id", eachItem._id);
                     $note.text(stringDate+ " - "  +eachItem.body);
 
-                    //$row = $('<div> class = "row"');
                     $col1 = $('<div>');
                     $col1.addClass("col-10");
                     $col2 = $('<div>');
@@ -55,32 +45,28 @@ $(document).ready(function () {
 
                     $("#previous-notes-"+data[0]._id).append($divElem);
 
-                    $col1.css('display', 'inline-block');   
-                    //$note.css('margin-right', '10px');             
+                    $col1.css('display', 'inline-block');               
                 })
               }
               else 
               {
                   var $note = $("<p>");
                   $note.text("No previous notes found.");
-                  //console.log("MODAL.jS: NO NOTES FOUND - ID = "+articleId);
                   $("#previous-notes-" + articleId).append($note);
               }
               // Show the modal 
               $("#article-note-modal-"+articleId).modal("toggle");
           })
-          .catch(function(error){
-              //console.log("error = "+error);
+          .catch(function(error) {
+              console.log("error = "+error);
           });
     }
     //Wrap the note into a package and send it on its way
     $('.modal-submit').on('click', function (event) {
        
        var $articleId = $(this).data("id");
-       //console.log("modal.js: $article id = "+$articleId);
        var $noteInput =  $('#article-note-text-'+$articleId).val();
        var $articleTitle = $(this).data("title");
-       //console.log("Article Note = "+$noteInput+" Article Id = "+$articleId);
 
        var notePackage = {
            body: $noteInput,
@@ -94,9 +80,8 @@ $(document).ready(function () {
        //Note ErrorHandling Routine
         if ($('#article-note-text-'+$articleId).val().trim() === "") {
           noteIsBlank = true;
-          //console.log("NOTEISBLANK = "+noteIsBlank);
         }
-        if(noteIsBlank){
+        if(noteIsBlank) {
           $('#article-note-text-'+$articleId).css({ "border-color": "red" });
           $(this).removeAttr('data-dismiss');
           noteIsBlank = false;
@@ -117,7 +102,6 @@ $(document).ready(function () {
             data: package //Pass the artist object
         })
             .then(function (data) {
-                //console.log("INSERT Package = "+data);
                 //clear the textarea in the model:
                 clearModalFormInput(package.id);
             })
@@ -126,7 +110,6 @@ $(document).ready(function () {
             });
     } //insertPackage
     function clearModalFormInput(id) {
-        //console.log("Clear package = "+id);
         $("#article-note-text-"+id).val("");
         $("#previous-notes-"+id).empty();
     }
@@ -134,16 +117,13 @@ $(document).ready(function () {
      * Delete Note
      **************/
     //Delete button not on page during page load, so add listener to closest parent
-    //$(".delete-note").on("click", function (event) {
-    $(document).on("click", ".delete-note", function(event){
+    $(document).on("click", ".delete-note", function(event) {
         var $noteId = $(this).data("id");
-        /*console.log("IN THE DELETE NODE");
-        console.log("BTN ID = "+$noteId);*/
         deleteNote($noteId);
         $("#div-"+$noteId).remove();
     });
     //delete the matching note from the notes collection
-    function deleteNote(id){
+    function deleteNote(id) {
         $.ajax("/delete-note", {
             type: "DELETE",
             data: {id: id} //Pass the artist object

@@ -9,7 +9,6 @@ $(document).ready(function () {
         event.preventDefault();
         $.get("/scrape", function (data) {
             location.replace("/");
-            //console.log("Scraped Data = "+data);
        });
     });//.scrape-new on click
 
@@ -23,9 +22,6 @@ $(document).ready(function () {
     $(".delete").on("click", function (event) {
         event.preventDefault();
         var articleId = $(this).parent().parent().parent().attr("data-id");
-        /*console.log("******************");
-        console.log("ArticleToSave = "+articleId);
-        console.log("******************");*/
         setSingleArticleStatus(articleId, unmarked);
     });
     //set all hidden articles to new.
@@ -38,20 +34,19 @@ $(document).ready(function () {
      * Update more than one articles status
      **************************************/
     function setArticlesStatus(status) {
-        //console.log("CREATEPROFILE.js: " + JSON.stringify(artist));
         $.ajax("/update-articles-status", {
           type: "PUT",
           data: {status: status} //Pass the artist object
         })
-        .then(function(){
+        .then(function() {
             location.replace("articles");
         })
-        .catch(function(error){
+        .catch(function(error) {
             console.log("error = "+error);
         });
     } //setArticlesStatus
 
-    function setSingleArticleStatus(id, status){
+    function setSingleArticleStatus(id, status) {
         data = {
             id: id,
             status: status
@@ -60,27 +55,20 @@ $(document).ready(function () {
             type: "PUT",
             data: data //Pass the artist object
           })
-          .then(function(){
+          .then(function() {
               //location.replace("/");
               location.replace("/saved");
           })
-          .catch(function(error){
-              //console.log("error = "+error);
+          .catch(function(error) {
+              console.log("error = "+error);
           });
     }
     
     //change article status to saved
     $(".save").on("click", function (event) {
         event.preventDefault();
-        //var articleId = $(this).attr("data-id");
         var articleId = $(this).parent().parent().parent().attr("data-id");
-        //var articleOldStatus = $(this).parent().parent().parent().attr("data-status");
         var articleNewStatus = saved;
-        /*console.log("******************");
-        console.log("ArticleToSave = "+articleId);
-        console.log("ArticleOldStatus = "+articleOldStatus);
-        console.log("ArticleNewStatus = "+articleNewStatus);
-        console.log("******************");*/
         var data = {
             id: articleId,
             status: articleNewStatus
@@ -96,10 +84,10 @@ $(document).ready(function () {
           type: "PUT",
           data: data //Pass the artist object
         })
-        .then(function(){
+        .then(function() {
             location.replace("/articles");
         })
-        .catch(function(error){
+        .catch(function(error) {
             console.log("error = "+error);
         });
     } //setArticlesStatus  

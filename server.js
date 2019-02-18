@@ -49,7 +49,7 @@ mongoose.connect(MONGODB_URI);
 
 // Set the app to listen on port 3000
 app.listen(PORT, function() {
-  //console.log("App running at: http://localhost:3000/");
+  console.log("App running at: http://localhost:3000/");
 });
 
 //MUST EXPORT APP FOR REQ.BODY TO WORK
